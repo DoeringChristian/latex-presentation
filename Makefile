@@ -1,14 +1,13 @@
 DOCKERIMG=texlive
-DOCKERCMD=podman run --permissive -v "$(PWD)":/usr/src/project -w /usr/src/project $(DOCKERIMG)
+DOCKERCMD=podman run --privileged -v "$(PWD)":/usr/src/project -w /usr/src/project $(DOCKERIMG)
 LATEXC=latexmk --pdf
 TEXFILE=main.tex
-#LATEXC=tectonic
 
 docker:
-	podman build -t $(DOCKERIMG) .
+	docker build -t $(DOCKERIMG) .
 
 pdf:
-	$(DOCKERCMD) $(LATEXC) 
+	$(DOCKERCMD) $(LATEXC) $(TEXFILE)
 
 no-notes:
 	$(DOCKERCMD) $(LATEXC) -jobname=no-notes $(TEXFILE)
